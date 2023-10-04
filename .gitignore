@@ -1,0 +1,9 @@
+.env
+dev
+**/.DS_Store
+__pycache__/
+venv/
+.idea/
+
+# Unity
+*.meta

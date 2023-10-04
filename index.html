@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+  <title>Japan Quotes</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <!-- For ripples -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="./jquery.ripples.js"></script>
+
+  <script defer src="face-api.js"></script>
+  <script defer src="script.js"></script>
+
+  <script >
+    // Deptricated function
+    function rotateFrame() {
+      document.body.style.setProperty("-webkit-transform", "rotate(90deg)", null);
+    }
+
+    function brightnessFunction(hueVal) {
+      var setAs = hueVal + "%"
+      document.getElementById("brighness-text").innerHTML = "Brightness " + setAs;
+      document.getElementById("video").setAttribute("style", "-webkit-filter:brightness(" + setAs + ")")
+      document.getElementById("video").style.objectFit = "fill";
+    }
+
+
+    function contrastFunction(hueVal) {
+      var setAs = hueVal + "%"
+      document.getElementById("contrast-text").innerHTML = "Contrast " + setAs;
+      document.getElementById("video").setAttribute("style", "-webkit-filter:contrast(" + setAs + ")")
+      document.getElementById("video").style.objectFit = "fill";
+    }
+
+
+    function saturateFunction(hueVal) {
+      var setAs = hueVal + "%"
+      document.getElementById("saturate-text").innerHTML = "Saturate " + setAs;
+      document.getElementById("video").setAttribute("style", "-webkit-filter:saturate(" + setAs + ")")
+      document.getElementById("video").style.objectFit = "fill";
+    }
+
+    function blurFunction(hueVal) {
+      var setAs = hueVal + "px"
+      document.getElementById("blur-text").innerHTML = "Blur " + setAs;
+      document.getElementById("video").setAttribute("style", "-webkit-filter:blur(" + setAs + ")")
+      document.getElementById("video").style.objectFit = "fill";
+    }
+
+    function updateSliders() {
+      console.log("click")
+      var brightness = document.getElementById("brightness-slider").value;
+      var blur = document.getElementById("blur-slider").value;
+      var contrast = document.getElementById("contrast-slider").value;
+      var saturate = document.getElementById("saturate-slider").value;
+      console.log(brightness, blur);
+      document.getElementById("video").setAttribute("style", "-webkit-filter:blur(" + blur + "px) brightness(" + brightness + "%) contrast(" + contrast + "%) saturate(" + saturate + "%)")
+      document.getElementById("video").style.objectFit = "fill";
+    }
+
+
+    
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: black;
+      width: 100vw;
+      /* width: 1920px; */
+      height: 100vh;
+      overflow:hidden;
+    }
+
+    video {
+      visibility: visible;
+      /* filter: brightness(240%);
+      filter: contrast(840%);
+      filter: blur(5px); */
+      /* filter: grayscale(80%) brightness(240%) blur(5px) contrast(140%) saturate(30%); */
+    }
+
+    canvas {
+      position: absolute;
+      /* width: 1920px;
+      height: 1080px; */
+      /* border: 10px solid blue; */
+      /* Rotation to make the screen vertical */
+      /* transform: rotate(-90deg); */
+    }
+
+
+    #videoHolder .rotateIt { 
+      /* Rotation to make the screen vertical */
+      transform: rotate(-90deg); 
+    }
+
+
+    #front {
+      width: 100vw;
+      height: 100vh; 
+      position: absolute;
+      z-index: 99;
+    }
+
+    #front .rotateIt {
+      width: 100vh !important;
+      height: 100vw !important;
+    }
+
+    #theForm {
+      z-index: 199;
+      position: absolute;
+      display: block;
+      margin: 1% 5% 0% 5%;
+      width: 200px;
+      background-color: rgba(240, 248, 255, 0.314);
+      opacity: 0.0;
+    }
+
+    #theForm:hover {
+      opacity: 1;
+    }
+
+
+    #textHolder {
+      position: absolute;
+      /* border: 2px solid green; */
+      height: 100vh;
+      display: flex;
+      align-items: center; /* Vertical center alignment */
+      justify-content: center; /* Horizontal center alignment */
+    }
+
+    #textHolder .rotateIt {
+      width: 100%; 
+      bottom: 0; 
+    }
+
+    #theText {
+      font-size: 5em;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+      text-align: center;
+      color:rgb(255, 0, 0);
+      text-transform: uppercase;
+      width: 80%;
+      padding: 10%;
+      /* border: 2px solid red; */
+      /* vertical-align: center; */
+      display: inline-block;
+      vertical-align: middle;
+      /* height: 100vh; */
+    }
+
+    #theText .rotateIt {
+      font-size: 5em;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+      text-align: center;
+      color:rgb(255, 0, 0);
+      text-transform: uppercase;
+      width: 80%;
+      padding: 10%;
+    }
+
+    .rotateIt {
+      transform: rotate(-90deg);
+    }
+
+    #clickButton {
+      border: 1px solid white;
+      cursor: pointer;
+      background-color: rgb(122, 122, 122);
+      width: 100px;
+      margin: 2em;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="videoHolder" class="">
+    <!-- <video id="video" width="1440" height="1120" autoplay muted></video> -->
+    <video style = "object-fit: fill;" id="video" width="1920" height="1080" autoplay muted></video>
+    <!-- <video id="video" width="2160" height="1680" autoplay muted></video> -->
+    <!-- <video id="video" width="2880" height="2240" autoplay muted></video> -->
+  </div>
+  
+  <div id="front" class="">
+
+    <form id="theForm">
+      <input type="checkbox" id="boundingBox" name="boundingBox" value="boundingBox">
+      <label for="vehicle1"> boundingBox</label><br>
+      <input type="checkbox" id="landmarks" name="landmarks" value="landmarks" checked>
+      <label for="vehicle2"> landmarks</label><br>
+      <input type="checkbox" id="expression" name="expression" value="expression">
+      <label for="vehicle3"> expression</label><br><br>
+      <!-- <button id="hideButton" onclick="rotateFrame()">Rotate</button> -->
+
+      <div class="slider-wrapper"> 
+        <p id="brighness-text">Brightness</p>
+        <input type="range" data-default="100" value="100" min="0" max="360" step="10" id="brightness-slider" oninput="brightnessFunction(this.value)">
+      </div>
+
+      <div class="slider-wrapper"> 
+        <p id="blur-text">Blur</p>
+        <input type="range" data-default="0" value="0" min="0" max="360" step="10" id="blur-slider" oninput="blurFunction(this.value)">
+      </div>
+
+      <div class="slider-wrapper"> 
+        <p id="contrast-text">Contrast</p>
+        <input type="range" data-default="100" value="100" min="0" max="360" step="10" id="contrast-slider" oninput="contrastFunction(this.value)">
+      </div>
+
+      <div class="slider-wrapper"> 
+        <p id="saturate-text">Saturate</p>
+        <input type="range" data-default="100" value="100" min="0" max="360" step="10" id="saturate-slider" oninput="saturateFunction(this.value)">
+      </div>
+
+      <div id="clickButton" onclick="updateSliders()"> Apply </div>
+    </form>
+
+    <div id="textHolder">
+      <div id="theText" class=""> - </div>
+    </div>
+    
+  </div>
+</body>
+
+<script>
+
+  // ripples
+  // $(document).ready(function() {
+  //     try {
+  //       $('video').ripples({
+  //         resolution: 512,
+  //         dropRadius: 20, //px
+  //         perturbance: 0.04,
+  //       });
+  //       $('theForm').ripples({
+  //         resolution: 128,
+  //         dropRadius: 10, //px
+  //         perturbance: 0.04,
+  //         interactive: false
+  //       });
+  //       console.log("Adding: ", $('video') )
+  //     }
+  //     catch (e) {
+  //       console.log("Error: ", e)
+  //       $('.error').show().text(e);
+  //     }
+
+  //     // $('.js-ripples-disable').on('click', function() {
+  //     //   $('body, main').ripples('destroy');
+  //     //   $(this).hide();
+  //     // });
+
+  //     // $('.js-ripples-play').on('click', function() {
+  //     //   $('body, main').ripples('play');
+  //     // });
+
+  //     // $('.js-ripples-pause').on('click', function() {
+  //     //   $('body, main').ripples('pause');
+  //     // });
+
+  //     // Automatic drops
+  //     setInterval(function() {
+  //       var $el = $('theForm');
+  //       var x = Math.random() * $el.outerWidth();
+  //       var y = Math.random() * $el.outerHeight();
+  //       var dropRadius = 20;
+  //       var strength = 0.04 + Math.random() * 0.04;
+
+  //       $el.ripples('video', x, y, dropRadius, strength);
+  //     }, 400);
+  //   });
+</script>
+</html>
